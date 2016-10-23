@@ -1,0 +1,94 @@
+<html>
+<head>
+    <style type="text/css">
+        html { height: 100% }
+        body { height: 100%; margin: 0; padding: 0 }
+        #map_canvas { height: 100% }
+    </style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBSnBF0B3hYxJfMUnz2DVwQy9gPjdUOoec"></script>
+
+<script>
+  $(document).ready(function() {
+      $("button").click(function () {
+          $.ajax({
+              type: 'GET',
+              url: 'http://localhost:3000/json',
+              crossDomain: true,
+              data: {},
+              cache: false,
+              success: function(data) {
+
+                  var tr;
+                  for (var i = 0; i < data.places.length; i++) {
+                      tr = $('<tr/>');
+                      tr.append("<td>" + data.places[i].id + "</td>");
+                      tr.append("<td>" + data.places[i].lat + "</td>");
+                      tr.append("<td>" + data.places[i].lon + "</td>");
+
+                      $('table').append(tr);
+                  }
+
+              }
+
+          });
+
+
+      });
+
+
+  });
+
+
+
+</script>
+
+    <script type="text/javascript">
+        function initializemap() {
+
+            var mapOptions = {
+                center: new google.maps.LatLng(44.5403, -78.5463),
+                zoom: 5,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            var infoWindow = new google.maps.InfoWindow();
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+            $.getJSON('http://localhost:3000/json', function(data) {
+                $.each( data.places, function(i, value) {
+
+                    var myLatlng = new google.maps.LatLng(value.lat, value.lon);
+
+                    var marker = new google.maps.Marker({
+                        position: myLatlng,
+                        map: map,
+                        title: "place is at position"+value.lat+" "+value.lon
+                    });
+
+                });
+            });
+
+
+        }
+
+    </script>
+</head>
+<body onload="initializemap()">
+
+
+<button>Get External Content</button>
+
+
+<table id="tab" style="border: black">
+    <tr><th>id</th><th>lat</th><th>long</th></tr>
+
+</table>
+
+<div id="map" style="width: 500px; height: 400px"></div>
+
+
+
+</body>
+</html>
