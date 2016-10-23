@@ -14,7 +14,7 @@
       $("button").click(function () {
           $.ajax({
               type: 'GET',
-              url: 'http://localhost:3000/json',
+              url: 'https://cse5335vsb4640.herokuapp.com/json',
               crossDomain: true,
               data: {},
               cache: false,
@@ -56,7 +56,7 @@
             var infoWindow = new google.maps.InfoWindow();
             var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-            $.getJSON('http://localhost:3000/json', function(data) {
+            $.getJSON('https://cse5335vsb4640.herokuapp.com/json', function(data) {
                 $.each( data.places, function(i, value) {
 
                     var myLatlng = new google.maps.LatLng(value.lat, value.lon);
